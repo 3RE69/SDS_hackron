@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heatmap Store - Bangalore's Premier Location Intelligence Platform</title>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #092732 0%, #0c273f 100%);
+        }
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 15px;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .area-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white font-['Inter']">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold">StoreMapper<span class="text-blue-400">Pro</span></div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#popularareas" class="hover:text-blue-300 transition">Popular Areas</a>
+                <a href="#features" class="hover:text-blue-300 transition">Features</a>
+                <a href="#insights" class="hover:text-blue-300 transition">Insights</a>
+                <a href="#contact" class="hover:text-blue-300 transition">Contact</a>
+            </div>
+            <button class="glass px-6 py-2 rounded-full hover:bg-blue-600 transition">
+                <a href="../sign-in-page/templates/index.html">Login</a>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Find Your Perfect Store Location</h1>
+            <p class="text-xl mb-12 max-w-2xl mx-auto">Data-driven location intelligence for smarter business decisions in India's tech capital.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="glass px-8 py-3 rounded-full text-lg hover:bg-blue-600 transition"><a href="#insights" class="hover:text-blue-300 transition">View Map</a></button>
+                <!-- <button class="bg-white text-blue-900 px-8 py-3 rounded-full text-lg hover:bg-gray-100 transition">Schedule Demo</button> -->
+            </div>
+            <div class="flex flex-wrap justify-center gap-3">
+                <span class="area-badge">Indiranagar</span>
+                <span class="area-badge">Koramangala</span>
+                <span class="area-badge">Kothnur</span>
+                <span class="area-badge">Murugeshpalya</span>
+                <span class="area-badge">Vijaynagar</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="insights" class="py-20 px-6">
+        <div class="container mx-auto">
+            <div class="glass p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold mb-8">Bangalore Market Insights</h2>
+                <div id="map" class="mb-6"></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Tech Parks Proximity</h3>
+                        <div class="text-3xl font-bold">15<span class="text-sm font-normal"> major hubs</span></div>
+                    </div>
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Metro Connectivity</h3>
+                        <div class="text-3xl font-bold">42<span class="text-sm font-normal"> stations</span></div>
+                    </div>
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Daily Foot Traffic</h3>
+                        <div class="text-3xl font-bold">1.2M<span class="text-sm font-normal">/day</span></div>
+                    </div>
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Growth Potential</h3>
+                        <div class="text-3xl font-bold">92<span class="text-sm font-normal">%</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-6 rounded-xl feature-card">
+                    <!-- <i class="bi bi-building text-4xl mb-4"></i> -->
+                    <h3 class="text-xl font-semibold mb-3"> Live Foot Traffic Updates</h3>
+                    <p>Integrate with real-time foot traffic data sources
+                       (e.g., mobile device location data, sensor networks) to provide up-to-the-minute insights.
+                    </p>
+                </div>
+                <div class="glass p-6 rounded-xl feature-card">
+                    <!-- <i class="bi bi-train-front text-4xl mb-4"></i> -->
+                    <h3 class="text-xl font-semibold mb-3">Weather & Event Integration</h3> 
+                    <p>Incorporate real-time weather data and event calendars to understand how external factors impact foot traffic and demand..</p> 
+                </div>
+                <div class="glass p-6 rounded-xl feature-card">
+                    <!-- <i class="bi bi-people text-4xl mb-4"></i> -->
+                    <h3 class="text-xl font-semibold mb-3">Social Media Listening</h3>
+                    <p> Integrate social media sentiment analysis to gauge local opinions and trends in real-time.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="popularareas" class="py-20 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Popular Areas in Bangalore</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-6 rounded-xl feature-card">
+                    <img src='https://media.istockphoto.com/id/1439682316/photo/becak.webp?a=1&b=1&s=612x612&w=0&k=20&c=UCDaDBgy4UWBXUEBMQRtN6xgdCAeDevb3204wGOjJiA='alt="MG Road" class="area-image">
+                  <div class="area-details">
+                <h2>MG Road</h2>
+                <p>Known for its shopping, restaurants, and vibrant nightlife. A central hub in Bangalore.</p>
+                <p><strong>Highlights:</strong> Brigade Road, Shopping Centers, Metro Connectivity.</p>
+            </div>
+                </div>
+                <div class="glass p-6 rounded-xl feature-card">
+                    <img src="https://media.istockphoto.com/id/1130074462/photo/reflect-shade-and-shadow-tree-mirror-on-water-lake-environment-park-background-nature.jpg?s=1024x1024&w=is&k=20&c=DBSC6bHvoqbtTYj9sQF4eiDzKlAo5SwmxcLqJTp6Nsg=" alt="Indiranagar" class="area-image">
+            <div class="area-details">
+                <h2>Indiranagar</h2>
+                <p>A popular residential and commercial area with numerous pubs, restaurants, and boutiques.</p>
+                <p><strong>Highlights:</strong> 100 Feet Road, Restaurants, Pubs, Shopping.</p>
+            </div>
+            </div>
+            <div class="glass p-6 rounded-xl feature-card">
+                <img src="https://plus.unsplash.com/premium_photo-1697730116501-72f5749dffce?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8V2hpdGVmaWVsZCUyMGJhbmdsb3JlfGVufDB8fDB8fHww" alt="Whitefield" class="area-image">
+                <div class="area-details">
+                    <h2>Whitefield</h2>
+                    <p>A major IT hub with numerous tech parks, shopping malls, and residential complexes.</p>
+                    <p><strong>Highlights:</strong> IT Parks, Shopping Malls, Residential Areas.</p>
+                </div>
+        </div>
+        <div class="glass p-6 rounded-xl feature-card">
+            <img src="https://plus.unsplash.com/premium_photo-1681550093390-14477e7b196a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8RWxlY3Ryb25pYyUyMENpdHklMjBiYW5nbG9yZXxlbnwwfHwwfHx8MA%3D%3D" alt="Electronic City" class="area-image">
+            <div class="area-details">
+                <h2>Electronic City</h2>
+                <p>Another major IT hub, home to many large tech companies and residential areas.</p>
+                <p><strong>Highlights:</strong> Tech Companies, Residential Areas, Industrial Hub.</p>
+            </div>
+    </div>
+    <div class="glass p-6 rounded-xl feature-card">
+        <img src="https://media.istockphoto.com/id/964176690/photo/old-catholic-church-barcelona-sorsogon-philippines.webp?a=1&b=1&s=612x612&w=0&k=20&c=Z4VW6UVJlwq4ia8bbQP_UDQ6Of5s1_CWuMx8uge6h6g=" alt="Koramangala" class="area-image">
+        <div class="area-details">
+            <h2>Koramangala</h2>
+            <p>A cosmopolitan area with a mix of residential and commercial spaces, known for its startups and food scene.</p>
+            <p><strong>Highlights:</strong> 5th Block, Restaurants, Cafes, Startups.</p>
+        </div>
+</div>
+</div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map centered on Bangalore
+            const map = L.map('map').setView([12.9716, 77.5946], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Popular areas in Bangalore with simulated heat data
+            const locations = [
+                {name: "Indiranagar", coords: [12.9719, 77.6412], intensity: 0.9},
+                {name: "Koramangala", coords: [12.9279, 77.6271], intensity: 0.8},
+                {name: "HSR Layout", coords: [12.9081, 77.6476], intensity: 0.7},
+                {name: "Whitefield", coords: [12.9698, 77.7500], intensity: 0.8},
+                {name: "Electronic City", coords: [12.8399, 77.6770], intensity: 0.6},
+                {name: "MG Road", coords: [12.9741, 77.6093], intensity: 0.9}
+            ];
+
+            // Add markers and heat circles
+            locations.forEach(loc => {
+                L.marker(loc.coords)
+                    .bindPopup(`<b>${loc.name}</b><br>Foot Traffic: High<br>Growth Potential: Strong`)
+                    .addTo(map);
+
+                L.circle(loc.coords, {
+                    radius: 1000,
+                    color: 'rgba(255, 69, 0, 0.5)',
+                    fillColor: '#ff4500',
+                    fillOpacity: loc.intensity
+                }).addTo(map);
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
