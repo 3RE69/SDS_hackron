@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Store Locator & Heatmap Analysis</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Poppins', sans-serif; background: #092732; color: white; }
+        .glass { background: rgba(255, 255, 255, 0.1); border-radius: 15px; padding: 15px; }
+        .map-container { height: 400px; width: 100%; border-radius: 15px; }
+        #categories { color: #374151; }
+        #options { background-color: #374151; }
+    </style>
+</head>
+<body>
+    <div id="app" class="p-6">
+        <div class="glass mb-6">
+            
+            <button  class="glass px-6 py-2 rounded-full hover:bg-blue-600 transition">
+                <a href="index.html">Home</a>
+            </button>
+            <input v-model="searchQuery"  id="categories" placeholder="Search stores..." class="p-2 rounded w-full">
+            <select v-model="selectedCategory" class="p-2 rounded w-full mt-2">
+                <option id="categories opt" value="">All Categories</option>
+                <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+            </select>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass h-[500px] overflow-y-auto">
+                <div v-for="store in filteredStores" :key="store.id" class="p-4 border-b cursor-pointer" @click="selectStore(store)">
+                    <h3 class="font-bold">{{ store.name }} ({{ store.category }})</h3>
+                    <p>{{ store.phone }}</p>
+                    <p>{{ store.address }}</p>
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <div class="glass">
+                    <div id="map" class="map-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp, ref, computed } = Vue;
+
+        createApp({
+            setup() {
+                const stores = ref([
+                    { id: 1, name: "Best Buy", phone: "(212) 555-0123", rating: 4.5, lat: 40.762, lng: -73.982, address: "Manhattan, NY", category: "Electronics" },
+                    { id: 2, name: "Macy's", phone: "(212) 555-0124", rating: 4.8, lat: 40.750, lng: -73.989, address: "Herald Square, NY", category: "Clothing" },
+                    { id: 3, name: "Joe's Pizza", phone: "(212) 555-0125", rating: 4.7, lat: 40.730, lng: -74.000, address: "Greenwich Village, NY", category: "Food" },
+                    { id: 4, name: "Apple Store", phone: "(212) 555-0126", rating: 4.9, lat: 40.764, lng: -73.973, address: "5th Ave, NY", category: "Electronics" },
+                    { id: 5, name: "Whole Foods", phone: "(212) 555-0127", rating: 4.6, lat: 40.741, lng: -73.990, address: "Union Square, NY", category: "Grocery" },
+                    { id: 6, name: "Nike Store", phone: "(212) 555-0128", rating: 4.7, lat: 40.759, lng: -73.984, address: "Times Square, NY", category: "Clothing" },
+                    { id: 7, name: "Barnes & Noble", phone: "(212) 555-0129", rating: 4.5, lat: 40.755, lng: -73.983, address: "Union Square, NY", category: "Books" },
+                    { id: 8, name: "GameStop", phone: "(212) 555-0130", rating: 4.3, lat: 40.752, lng: -73.977, address: "Midtown, NY", category: "Gaming" },
+                    { id: 9, name: "Target", phone: "(212) 555-0131", rating: 4.2, lat: 40.748, lng: -73.988, address: "Chelsea, NY", category: "Retail" },
+                    { id: 10, name: "Sephora", phone: "(212) 555-0132", rating: 4.6, lat: 40.757, lng: -73.985, address: "Midtown, NY", category: "Beauty" }
+                ]);
+                
+                const categories = computed(() => [...new Set(stores.value.map(s => s.category))]);
+                const searchQuery = ref('');
+                const selectedCategory = ref('');
+                const selectedStore = ref(null);
+                let map = null;
+                let markers = [];
+
+                const filteredStores = computed(() => {
+                    return stores.value.filter(store =>
+                        (!selectedCategory.value || store.category === selectedCategory.value) &&
+                        (!searchQuery.value || store.name.toLowerCase().includes(searchQuery.value.toLowerCase()))
+                    );
+                });
+
+                const initializeMap = () => {
+                    map = L.map('map').setView([40.758, -73.985], 12);
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                    updateMarkers();
+                };
+
+                const updateMarkers = () => {
+                    markers.forEach(marker => marker.remove());
+                    markers = [];
+                    stores.value.forEach(store => {
+                        const marker = L.marker([store.lat, store.lng])
+                            .bindPopup(store.name)
+                            .addTo(map);
+                        markers.push(marker);
+                    });
+                };
+
+                const selectStore = (store) => {
+                    selectedStore.value = store;
+                    map.setView([store.lat, store.lng], 15);
+                };
+
+                setTimeout(initializeMap, 100);
+                
+                return { stores, searchQuery, selectedCategory, categories, filteredStores, selectStore };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foot Traffic Heatmap</title>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <style>
+        body, html { margin: 0; height: 100%; }
+        #map { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script>
+    mapboxgl.accessToken = 'pk.eyJ1Ijoib21rYXJnYXdhczAxMDkiLCJhIjoiY203dmozamd6MDBidzJzcHliMDdiN3EwaiJ9.Lhz7wvtQzLzn8sz23Kf3Ow'; // Replace with your token
+
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/dark-v11',
+        center: [-74.006, 40.7128], // NYC center
+        zoom: 11
+    });
+
+    function loadCSV() {
+        fetch('filtered_food_stores.csv') // Ensure this file is accessible
+            .then(response => response.text())
+            .then(csvText => {
+                Papa.parse(csvText, {
+                    header: true,
+                    dynamicTyping: true,
+                    complete: function(results) {
+                        const geojson = csvToGeoJSON(results.data);
+
+                        if (map.getLayer('heatmap-layer')) {
+                            map.removeLayer('heatmap-layer');
+                        }
+                        if (map.getSource('georeferenced-points')) {
+                            map.removeSource('georeferenced-points');
+                        }
+
+                        // Add data to the map
+                        map.addSource('georeferenced-points', {
+                            type: 'geojson',
+                            data: geojson
+                        });
+
+                        // Add heatmap layer with strong red colors
+                        map.addLayer({
+                            id: 'heatmap-layer',
+                            type: 'heatmap',
+                            source: 'georeferenced-points',
+                            maxzoom: 15,
+                            paint: {
+                        'heatmap-weight': ['interpolate', ['linear'], ['zoom'], 0, 0.3, 15, 1.5],
+                        'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 10, 0.8, 15, 2.5],
+                        'heatmap-color': [
+                            'interpolate', ['linear'], ['heatmap-density'],
+                             0, 'rgba(0, 0, 255, 0)',
+                                    0.2, 'blue',
+                                    0.4, 'cyan',
+                                    0.6, 'lime',
+                                    0.8, 'yellow',
+                                    1, 'red'
+
+                        ],
+                        'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 0, 5, 15, 30],
+                        'heatmap-opacity': 0.75  // Slightly transparent for a natural look
+                    }
+                        });
+                    }
+                });
+            })
+            .catch(error => console.error("Error loading CSV:", error));
+    }
+
+    function csvToGeoJSON(data) {
+        return {
+            type: 'FeatureCollection',
+            features: data.map(row => {
+                let lat, lon;
+
+                // Extract coordinates from "Georeference" column (POINT format)
+                if (row.Georeference) {
+                    const match = row.Georeference.match(/POINT \(([^ ]+) ([^ ]+)\)/);
+                    if (match) {
+                        lon = parseFloat(match[1]);
+                        lat = parseFloat(match[2]);
+                    }
+                }
+
+                // Only include valid coordinates
+                if (!isNaN(lat) && !isNaN(lon)) {
+                    return {
+                        type: 'Feature',
+                        geometry: {
+                            type: 'Point',
+                            coordinates: [lon, lat]  // Longitude first in GeoJSON
+                        },
+                        properties: {
+                            weight: 1  // Default weight for heatmap
+                        }
+                    };
+                }
+            }).filter(Boolean)  // Remove invalid entries
+        };
+    }
+
+    map.on('load', loadCSV);
+</script>
+
+</body>
+</html>

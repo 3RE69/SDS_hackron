@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Location Intelligence Platform</title>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #092732 0%, #0c273f 100%);
+        }
+        #map {
+            height: 500px;
+            width: 100%;
+            border-radius: 15px;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            transition: all 0.3s ease;
+        }
+        .area-badge {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen text-white font-['Inter']">
+    <!-- Navigation -->
+    <nav class="glass fixed w-full z-50 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-2xl font-bold">Urban<span class="text-blue-400">Market</span></div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#popularareas" class="hover:text-blue-300 transition">Popular Areas</a>
+                <a href="#features" class="hover:text-blue-300 transition">Features</a>
+                <a href="#insights" class="hover:text-blue-300 transition">Insights</a>
+                <a href="store.html" class="hover:text-blue-300 transition">Available Stores</a>
+                <a href="/index.html" class="hover:text-blue-300 transition">Home</a>
+            </div>
+            <button class="glass px-6 py-2 rounded-full hover:bg-blue-600 transition">
+                <a href="signin.html">Login</a>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-32 pb-20 px-6">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Find Your Perfect Store Location</h1>
+            <p class="text-xl mb-12 max-w-2xl mx-auto">Data-driven location intelligence for smarter business decisions in India's tech capital.</p>
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="glass px-8 py-3 rounded-full text-lg hover:bg-blue-600 transition"><a href="#insights" class="hover:text-blue-300 transition">View Map</a></button>
+                <button class="bg-white text-blue-900 px-8 py-3 rounded-full text-lg hover:bg-gray-100 transition"><a href="view04.html">Analyze For you</a></button>
+            </div>
+             <div class="flex flex-wrap justify-center gap-3">
+                <span class="area-badge"><a href="#1">Midtown Manhattan</a></span>
+                <span class="area-badge"><a href="#2" >Lower Manhattan</a></span>
+                <span class="area-badge"><a href="#3">Brooklyn</a></span>
+                <span class="area-badge"><a href="#4">Greenwich Village</a></span>
+                <span class="area-badge"> <a href="#5">Central Park</a></span> 
+            </div> 
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section id="insights" class="py-20 px-6">
+        <div class="container mx-auto">
+            <div class="glass p-8 rounded-2xl">
+                <h2 class="text-3xl font-bold mb-8">New York Insights</h2>
+                <div id="map" class="mb-6"></div>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Tech Parks Proximity</h3>
+                        <div class="text-3xl font-bold">15<span class="text-sm font-normal"> major hubs</span></div>
+                    </div>
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Metro Connectivity</h3>
+                        <div class="text-3xl font-bold">42<span class="text-sm font-normal"> stations</span></div>
+                    </div>
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Daily Foot Traffic</h3>
+                        <div class="text-3xl font-bold">1.2M<span class="text-sm font-normal">/day</span></div>
+                    </div>
+                    <div class="glass p-4 rounded-xl">
+                        <h3 class="font-semibold mb-2">Growth Potential</h3>
+                        <div class="text-3xl font-bold">92<span class="text-sm font-normal">%</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="glass p-6 rounded-xl feature-card">
+                    <!-- <i class="bi bi-building text-4xl mb-4"></i> -->
+                    <h3 class="text-xl font-semibold mb-3"> Live Foot Traffic Updates</h3>
+                    <p>Integrate with foot-traffic and population density for effective decision making.
+                    </p>
+                </div>
+                <div class="glass p-6 rounded-xl feature-card">
+                    <!-- <i class="bi bi-train-front text-4xl mb-4"></i> -->
+                    <h3 class="text-xl font-semibold mb-3">Population Density Analytics</h3> 
+                    <p>Find market gaps by analysing the density and distribution of competing stores.</p> 
+                </div>
+                <div class="glass p-6 rounded-xl feature-card">
+                    <!-- <i class="bi bi-people text-4xl mb-4"></i> -->
+                    <h3 class="text-xl font-semibold mb-3">Demographic Analysis</h3>
+                    <p>Demographic Analysis provides insights into the age, income level, and lifestyle of the local population, helping businesses target the right customer base for their store placement.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="popularareas" class="py-20 px-6">
+        <div class="container mx-auto">
+            <h2 class="text-3xl font-bold mb-12 text-center">Popular Areas in New York</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="glass p-6 rounded-xl feature-card" id="1">
+                <img src="https://media.istockphoto.com/id/908031820/photo/Lower-manhattan-cityscape-chinatown.webp?a=1&b=1&s=612x612&w=0&k=20&c=jnLnHrNUwx-vgGzds_N2OAtEQJRvq5H-2olmJDvV5Yo=" alt="Midtown Manhattan">
+                <div class="area-details">
+                    <h2>Midtown Manhattan</h2>
+                    <p>Home to iconic landmarks like the Empire State Building, Times Square, and Rockefeller Center. A bustling commercial and entertainment hub.</p>
+                </div>
+                </div>
+                <div class="glass p-6 rounded-xl feature-card" id="2">
+                    <img src="https://media.istockphoto.com/id/946087016/photo/aerial-view-of-lower-manhattan-new-york.webp?a=1&b=1&s=612x612&w=0&k=20&c=Bjnv4xMXvvpRg4hMDG6Mf9TRLJawE7vexM82f1_6pWI=">
+                    <div class="area-details">
+                        <h2>Lower Manhattan</h2>
+                        <p>Features the Financial District, Wall Street, the Statue of Liberty, and the 9/11 Memorial & Museum. A historic and financial core.</p>
+                    </div>
+            </div>
+            <div class="glass p-6 rounded-xl feature-card" id="3">
+                <img src="https://media.istockphoto.com/id/500619014/photo/brooklyn-bridge-from-east-river-sunset-with-flare.webp?a=1&b=1&s=612x612&w=0&k=20&c=oFadHypNiMwHVJXD6L8BWPcJTaknr8d03x5kcUSoTIQ=" alt="Brooklyn">
+                <div class="area-details">
+                    <h2>Brooklyn</h2>
+                    <p>Known for its diverse neighborhoods, vibrant arts scene, trendy restaurants, and the iconic Brooklyn Bridge. A hip and happening borough.</p>
+                </div>
+        </div>
+        <div class="glass p-6 rounded-xl feature-card" id="4">
+            <img src="https://media.istockphoto.com/id/1138673650/photo/streets-of-greenwich-village-manhattan-new-york.webp?a=1&b=1&s=612x612&w=0&k=20&c=jHC7bP8NaOrV75Fvxoas_udGh4PXshB0yk69sS26dYo=">
+            <div class="area-details">
+                <h2>Greenwich Village</h2>
+                <p>A bohemian neighborhood with a rich history, known for its cafes, jazz clubs, Washington Square Park, and a laid-back atmosphere.</p>
+            </div>
+    </div>
+    <div class="glass p-6 rounded-xl feature-card" id="5">
+        <img src="https://images.unsplash.com/photo-1631729779674-1f369e1116b4?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Q2VudHJhbCUyMFBhcmt8ZW58MHx8MHx8fDA%3D" alt="Central Park">
+        <div class="area-details">
+            <h2>Central Park</h2>
+            <p>A sprawling urban park offering green spaces, lakes, and recreational activities.</p>
+        </div>
+</div>
+</div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize map centered on New York City
+            const map = L.map('map').setView([40.7128, -74.0060], 12);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Popular areas in New York City with simulated heat data
+            const locations = [
+            {name: "Times Square", coords: [40.7580, -73.9855], intensity: 0.9},
+            {name: "Central Park", coords: [40.7851, -73.9683], intensity: 0.8},
+            {name: "Wall Street", coords: [40.7074, -74.0113], intensity: 0.7},
+            {name: "Brooklyn Bridge", coords: [40.7061, -73.9969], intensity: 0.8},
+            {name: "Empire State Building", coords: [40.7484, -73.9857], intensity: 0.6},
+            {name: "Fifth Avenue", coords: [40.7750, -73.9654], intensity: 0.9}
+            ];
+
+            // Add markers and heat circles
+            locations.forEach(loc => {
+                L.marker(loc.coords)
+                    .bindPopup(`<b>${loc.name}</b><br>Foot Traffic: High<br>Growth Potential: Strong`)
+                    .addTo(map);
+
+                L.circle(loc.coords, {
+                    radius: 1000,
+                    color: 'rgba(255, 69, 0, 0.5)',
+                    fillColor: '#ff4500',
+                    fillOpacity: loc.intensity
+                }).addTo(map);
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
